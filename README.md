@@ -81,8 +81,17 @@ and prevent overfitting.The *max_concurrent_iterations* (4) is set as we are run
 ### Results
 
 The best performing model from AutoML was the XGBoost Classifier with a StandardScaler. The accuracy of this model was
-99.8%. This accuracy is already incredibly high but I could potentially improve it by allowing AutoML to run for a longer 
-time and modifying a few configuration settings.
+99.8%. This accuracy is already incredibly high however I could potentially improve it further by modifying the 
+AutoML configuration settings and trying the steps below.
+* Disable early stopping, increase the number of cross validations and max_iterations allowing AutoML to evaluate more 
+models and avoid overfitting.
+* Employ more advanced data balancing techniques to ensure both target classes have the same number of examples. In this 
+case I have simply used upsampling but I could also leverage techniques such as SMOTE sampling.
+* Change my target metric to Recall, Precision, F-Score,... depending on considerations of confusion matrix preferences.
+* Enable featurization to generate custom features.
+* Provide test_data to the AutoML configuration by enabling the parameter.
+* Enable deep learning which though takes longer to compute might show improvement.
+
 
 *Figure 2: AutoML Best Model*
 ![automl-best_model_1](images/automl-best_model_1.png)
