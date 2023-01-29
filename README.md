@@ -1,6 +1,5 @@
 # Capstone Project - Azure Machine Learning Engineer
 
-*TODO:* Write a short introduction to your project.
 ## Introduction
 In this project, I train two machine learning models to perform a binary classification and compare their performance.
 1. Automated ML (denoted as AutoML from now on) model: Trained using AutoML.
@@ -10,19 +9,9 @@ I demonstrate the ability to leverage an external dataset in my workspace, train
 different tools available in the AzureML framework as well as to deploy the best performing model as a web service.
 
 
-## Project Set Up and Installation
-*OPTIONAL:* If your project has any special installation steps, this is where you should put it. 
-To turn this project into a professional portfolio project, you are encouraged to explain how to set up this project
-in AzureML.
-
 ## Dataset
 
 ### Overview
-*TODO*: Explain about the data you are using and where you got it from.
-
-### Task
-*TODO*: Explain the task you are going to be solving with this dataset and the features you will be using for it.
-
 
 The Wine Quality datasets have been taken from the UCI Machine Learning Repository. The data is broken up into two 
 individual datasets, one for red wines and the other for white wines. The red wine dataset contains 1599 examples while
@@ -65,13 +54,14 @@ Available at: [@Elsevier] http://dx.doi.org/10.1016/j.dss.2009.05.016
 
 
 ### Access
-*TODO*: Explain how you are accessing the data in your workspace.
 
 The wine quality datasets live on the UCI Machine Learning Repository. I read them as a *pandas DataFrame* using the  
-*read_csv* function and then store them on Azure 
+*read_csv* function and then store them on Azure blob storage for consumption.
+
+*Figure 1: Wine Quality Data*
+![data](images/data.png)
 
 ## Automated ML
-*TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
 
 I set the following AutoML parameters: 
 
@@ -89,13 +79,27 @@ and prevent overfitting.The *max_concurrent_iterations* (4) is set as we are run
 4 nodes. This allows 4 jobs to be run in parallel on each node.
 
 ### Results
-*TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+The best performing model from AutoML was the XGBoost Classifier with a StandardScaler. The accuracy of this model was
+99.8%. This accuracy is already incredibly high but I could potentially improve it by allowing AutoML to run for a longer 
+time and modifying a few configuration settings.
+
+*Figure 2: AutoML Best Model*
+![automl-best_model_1](images/automl-best_model_1.png)
+
+*Figure 3: AutoML Best Model Parameters*
+![automl-best_model_1](images/automl-best_model_parameters.png)
+
+*Figure 4: AutoML Model List*
+![automl-best_model_1](images/automl-best_model_2.png)
+
+*Figure 5: AutoML Model RunDetails*
+![automl-run_details](images/automl-run_details.png)
+
+*Figure 6: AutoML Model Runs*
+![automl-details_1](images/automl-details_1.png)
 
 ## Hyperparameter Tuning
-*TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters 
-and their ranges used for the hyperparameter search
 
 I used a Logistic Regression Classifier from Sklearn. My predictive task was binary classification and this model was 
 appropriate. 
@@ -121,18 +125,55 @@ to avoid log run times as well as the *max_concurrent_runs* to 4 as I am running
 has 4 nodes. This allows 4 jobs to be run in parallel on each node.
 
 ### Results
-*TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
+The best performing Logistic Regression Model came in with an accuracy of 98.57% which was great however it did not 
+beat the AutoML XGBoost Classifier model. 
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+*Figure 7: HyperDrive Model*
+![hyperdrive-details_3](images/hyperdrive-details_3.png)
+
+*Figure 8: HyperDrive Model RunDetails*
+![hyperdrive-run_details](images/hyperdrive-run_details.png)
+
+*Figure 9: HyperDrive Models Accuracy*
+![hyperdrive-details_1](images/hyperdrive-details_1.png)
+
+*Figure 10: HyperDrive Models Parameter Tuning*
+![hyperdrive-details_2](images/hyperdrive-details_2.png)
 
 ## Model Deployment
-*TODO*: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
+
+As the XGBoost Classifier AutoML model was the best performing model. I proceeded to deploy this model in Azure.
+I obtained the scoring script from the best run as well as used the current environment settings for the deployment. 
+
+I used the code below to deploy the model:
+
+*Figure 11: AutoML Model Deployment*
+![automl-deployment_success](images/automl-deployment_success.png)
+
+I tested the working endpoint via two methods:
+
+**Python**: 
+I leveraged the *requests* package to POST two JSONs to the service endpoint.
+
+*Figure 12: AutoML Python Interaction*
+![automl-deployment_test_python](images/automl-deployment_test_python.png)
+
+
+**Postman**: I posted a JSON to the service endpoint using the Postman desktop application.
+
+*Figure 13: AutoML Postman Interaction*
+![automl-deployment_postman](images/automl-deployment_postman.png)
+
+I also was able to see these interactions in the logs:
+
+*Figure 14: AutoML Deployment Logs*
+![automl-deployment_logs](images/automl-deployment_logs.png)
+
+Once I had completed my testing I proceeded to delete the service.
+
+*Figure 15: AutoML Deployment Deletion*
+![automl-service_deletion](images/automl-service_deletion.png)
 
 ## Screen Recording
-*TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
-- A working model
-- Demo of the deployed  model
-- Demo of a sample request sent to the endpoint and its response
 
-## Standout Suggestions
-*TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
+[https://youtu.be/fUItv24ryC4](https://youtu.be/fUItv24ryC4)
